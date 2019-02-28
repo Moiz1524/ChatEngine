@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Home | ChatApp</title>
+    <meta name="viewport" content="width=device-width, initial scale=1, user-scalable=no">
+    <link rel="stylesheet" href="/css/styles.css">
+  </head>
+  <body>
+<div class="main-class">
+
+
+    <div class="chat__sidebar" style="width: 20%; float: left;" >
+      <h3>People</h3><br>
+      <% if (data) { %>
+      <% for (var i=0; i < data.length; i++) { %>
+      <div id="users"></div>
+        <li>
+          <%= data[i].username %>
+          <% var frn = user.friends; %>
+          <% if (data[i].username !== user.username && !frn.includes(data[i].username)) { %>
+            	<input class="send_request" type="submit" value="Send Request" onclick="send_request('<%= user.username %>','<%= data[i].username%>')">
+          <% } %>
+          <% if (frn.includes(data[i].username)) { %>
+            <a href="/chat" class="">Start Chat</a>
+          <% } %>
+
+        </li>
+      <% } %>
+      <% } %>
+      <li><a href="/logout">Logout</a></li>
+    </div>
+
+
+
+    <!-- <div class="chat__main">
+      <ol id="messages" class="chat__messages"></ol>
+
+      <div class="chat__footer">
+        <form id="message-form" >
+           <input name="message" type="text" placeholder="Message"/ autofocus autocomplete="off">
+           <button>Send</button>
+        </form>
+      </div>
+     </div> -->
+       <div class="requests" style="width: 60%; padding-top: 30px;">
+         <p>Welcome <%= user.username %></p>
+         <% if (user.pending !== []) { %>
+           <% for (var i=0; i < user.pending.length; i++) { %>
+             <% if (!user.friends.includes(data[i].username)) { %>
+               <p>You have a friend request from <%= user.pending[i] %></p>
+               <input class="" type="submit" value="Accept" onclick="respond_request('<%= user.username %>','<%= user.pending[i] %>','Accept')">
+               <input class="" type="submit" value="Reject" onclick="respond_request('<%= user.username %>','<%= user.pending[i] %>','Reject')" style="">
+             <% } %>
+         <% } %>
+         <% } %>
+       </div>
+
+</div>
+    <!-- <script id="message-template" type="text/template">
+      <li class="message">
+        <div class="message__title">
+          <h4>{{from}}</h4>
+          <span>{{createdAt}}</span>
+        </div>
+        <div class="message__body">
+          <p>{{text}}</p>
+        </div>
+      </li>
+    </script> -->
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/libs/jquery-3.3.1.min.js"></script>
+    <!-- <script src="/js/libs/moment.js"></script> -->
+    <!-- <script src="/js/libs/mustache.js"></script> -->
+    <!-- <script src="/js/index.js"></script> -->
+    <script src="/js/request.js"></script>
+  </body>
+</html>
